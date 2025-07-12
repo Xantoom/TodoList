@@ -1,6 +1,8 @@
 # Development environment override
 services:
     php:
+        command: >
+            sh -c "git config --global --add safe.directory /app && frankenphp run --config /etc/caddy/Caddyfile"
         build:
             context: .
             target: frankenphp_dev
