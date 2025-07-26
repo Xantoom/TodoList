@@ -39,6 +39,7 @@ class AppFixtures extends Fixture
 				->setCreatedAt(new \DateTimeImmutable())
 				->setIsDone($i % 2 === 0)
 				->setTitle('Task ' . $i)
+				->setUserEntity($user)
 			;
 
 			$manager->persist($task);

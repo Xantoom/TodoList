@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,6 +31,14 @@ class TaskController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
+			$currentUser = $this->getUser();
+			if ($currentUser instanceof User) {
+				$task->setUserEntity($currentUser);
+			} else {
+				$this->addFlash('error', 'Vous devez être connecté pour créer une tâche.');
+				return $this->redirectToRoute('task_list');
+			}
+
 			$entityManager->persist($task);
 			$entityManager->flush();
 
@@ -51,6 +60,14 @@ class TaskController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
+			$currentUser = $this->getUser();
+			if ($currentUser instanceof User) {
+				$task->setUserEntity($currentUser);
+			} else {
+				$this->addFlash('error', 'Vous devez être connecté pour créer une tâche.');
+				return $this->redirectToRoute('task_list');
+			}
+
 			$entityManager->flush();
 
 			$this->addFlash('success', 'La tâche a bien été modifiée.');
@@ -78,6 +95,8 @@ class TaskController extends AbstractController
 	#[Route('/tasks/{id}/delete', name: 'task_delete')]
 	public function deleteTask(Task $task, EntityManagerInterface $entityManager): Response
 	{
+		$task->getUserEntity()?->removeTask($task);
+
 		$entityManager->remove($task);
 		$entityManager->flush();
 
