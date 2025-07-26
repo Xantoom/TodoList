@@ -26,6 +26,9 @@ class Task
     #[ORM\Column(nullable: true)]
     private ?bool $isDone = null;
 
+    #[ORM\ManyToOne(inversedBy: 'task')]
+    private ?User $userEntity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,4 +88,16 @@ class Task
 
 		return $this;
 	}
+
+    public function getUserEntity(): ?User
+    {
+        return $this->userEntity;
+    }
+
+    public function setUserEntity(?User $userEntity): static
+    {
+        $this->userEntity = $userEntity;
+
+        return $this;
+    }
 }
