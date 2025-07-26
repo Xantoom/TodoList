@@ -29,6 +29,5 @@ return [
 	'shop-homepage' => [
 		'type' => 'css',
 		'path' => './assets/styles/shop-homepage.css',
-		'entrypoint' => true,
 	],
 ];
