@@ -8,6 +8,7 @@ PHP_CONT = $(DOCKER_COMP) exec php
 PHP      = $(PHP_CONT) php
 COMPOSER = $(PHP_CONT) composer
 SYMFONY  = $(PHP) bin/console
+PHPUNIT  = $(PHP) bin/phpunit
 
 # Misc
 .DEFAULT_GOAL = help
@@ -63,6 +64,14 @@ entity: ## Generate a new entity
 
 controller: ## Generate a new controller
 	@$(SYMFONY) make:controller
+
+## —— PHPUnit 🧪 ———————————————————————————————————————————————————————————————
+test: ## Run PHPUnit tests, pass the parameter "c=" to run a given command,
+	@$(eval c ?=)
+	@$(PHPUNIT) $(c)
+
+test-coverage: c=--coverage-html var/coverage ## Run PHPUnit tests with code coverage
+test-coverage: test
 
 ## —— Doctrine 🏰 ——————————————————————————————————————————————————————————————
 db: ## List all Doctrine commands or pass the parameter "c=" to run a given command, example: make db c='doctrine:database:create'
