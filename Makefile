@@ -66,12 +66,21 @@ controller: ## Generate a new controller
 	@$(SYMFONY) make:controller
 
 ## —— PHPUnit 🧪 ———————————————————————————————————————————————————————————————
+load-db-test: ## Load the database with fixtures for testing
+	@$(SYMFONY) doctrine:database:create --if-not-exists --env=test
+	@$(SYMFONY) doctrine:migrations:migrate -n --env=test
+
+reset-db-test:
+	@$(SYMFONY) doctrine:database:drop --force --env=test
+	@$(SYMFONY) doctrine:database:create --if-not-exists --env=test
+	@$(SYMFONY) doctrine:migrations:migrate -n --env=test
+
 test: ## Run PHPUnit tests, pass the parameter "c=" to run a given command,
 	@$(eval c ?=)
 	@$(PHPUNIT) $(c)
 
-test-coverage: c=--coverage-html var/coverage ## Run PHPUnit tests with code coverage
-test-coverage: test
+test-coverage: ## Run PHPUnit tests with code coverage
+	@$(PHPUNIT) --coverage-text --colors=always
 
 ## —— Doctrine 🏰 ——————————————————————————————————————————————————————————————
 db: ## List all Doctrine commands or pass the parameter "c=" to run a given command, example: make db c='doctrine:database:create'
