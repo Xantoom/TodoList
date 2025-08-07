@@ -55,6 +55,11 @@ class TaskController extends AbstractController
 	#[Route('/tasks/{id}/edit', name: 'task_edit')]
 	public function edit(Task $task, Request $request, EntityManagerInterface $entityManager): Response
 	{
+		// Check if the current user owns this task
+		if ($task->getUserEntity() !== $this->getUser()) {
+			throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres tâches.');
+		}
+
 		$form = $this->createForm(TaskType::class, $task);
 
 		$form->handleRequest($request);
@@ -84,6 +89,11 @@ class TaskController extends AbstractController
 	#[Route('/tasks/{id}/toggle', name: 'task_toggle')]
 	public function toggleTask(Task $task, EntityManagerInterface $entityManager): Response
 	{
+		// Check if the current user owns this task
+		if ($task->getUserEntity() !== $this->getUser()) {
+			throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres tâches.');
+		}
+
 		$task->toggle(!$task->isDone());
 		$entityManager->flush();
 
@@ -101,8 +111,7 @@ class TaskController extends AbstractController
 		}
 
 		if ($task->getUserEntity() !== $this->getUser()) {
-			$this->addFlash('error', 'Vous ne pouvez supprimer que vos propres tâches.');
-			return $this->redirectToRoute('task_list');
+			throw $this->createAccessDeniedException('Vous ne pouvez supprimer que vos propres tâches.');
 		}
 
 		$task->getUserEntity()?->removeTask($task);
