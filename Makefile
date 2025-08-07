@@ -65,6 +65,9 @@ entity: ## Generate a new entity
 controller: ## Generate a new controller
 	@$(SYMFONY) make:controller
 
+factory: ## Generate a new factory
+	@$(SYMFONY) make:factory
+
 ## —— PHPUnit 🧪 ———————————————————————————————————————————————————————————————
 load-db-test: ## Load the database with fixtures for testing
 	@$(SYMFONY) doctrine:database:create --if-not-exists --env=test
@@ -80,7 +83,7 @@ test: ## Run PHPUnit tests, pass the parameter "c=" to run a given command,
 	@$(PHPUNIT) $(c)
 
 test-coverage: ## Run PHPUnit tests with code coverage
-	@$(PHPUNIT) --coverage-text --colors=always
+	@$(PHPUNIT) --coverage-html ./coverage
 
 ## —— Doctrine 🏰 ——————————————————————————————————————————————————————————————
 db: ## List all Doctrine commands or pass the parameter "c=" to run a given command, example: make db c='doctrine:database:create'

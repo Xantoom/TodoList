@@ -2,26 +2,25 @@
 
 namespace App\Tests\Functional;
 
-use App\Entity\User;
+use App\Factory\UserFactory;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
 class DefaultControllerTest extends WebTestCase
 {
-	public function testIndex(): void
+	use Factories, ResetDatabase;
+
+	public function testIndexAction(): void
 	{
 		$client = static::createClient();
-		$user = new User()
-			->setEmail('test@test.com')
-			->setUsername('testuser')
-			->setPassword('password123')
-			->setRoles(['ROLE_USER'])
-		;
-		$entityManager = $client->getContainer()->get('doctrine')->getManager();
-		$entityManager->persist($user);
-		$entityManager->flush();
+
+		$user = UserFactory::createOne()->_real();
 		$client->loginUser($user);
+
 		$client->request('GET', '/');
 
 		self::assertResponseIsSuccessful();
+		self::assertRouteSame('homepage');
 	}
 }

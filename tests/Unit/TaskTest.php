@@ -24,7 +24,8 @@ class TaskTest extends TestCase
 	{
 		$createdAt = new \DateTimeImmutable('2023-01-01 10:00:00');
 
-		$this->assertNull($this->task->getCreatedAt());
+		// The constructor automatically sets createdAt, so it should not be null
+		$this->assertInstanceOf(\DateTimeImmutable::class, $this->task->getCreatedAt());
 
 		$result = $this->task->setCreatedAt($createdAt);
 

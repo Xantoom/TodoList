@@ -29,7 +29,12 @@ class Task
     #[ORM\ManyToOne(inversedBy: 'task')]
     private ?User $userEntity = null;
 
-    public function getId(): ?int
+	public function __construct()
+	{
+		$this->createdAt = new \DateTimeImmutable();
+	}
+
+	public function getId(): ?int
     {
         return $this->id;
     }
