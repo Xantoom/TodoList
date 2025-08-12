@@ -22,6 +22,14 @@ class TaskController extends AbstractController
 		]);
 	}
 
+	#[Route('/tasks-done', name: 'task_done_list')]
+	public function doneList(TaskRepository $taskRepository): Response
+	{
+		return $this->render('task/done_list.html.twig', [
+			'tasks' => $taskRepository->findBy(['isDone' => true])
+		]);
+	}
+
 	#[Route('/tasks/create', name: 'task_create')]
 	public function create(Request $request, EntityManagerInterface $entityManager): Response
 	{
@@ -55,7 +63,6 @@ class TaskController extends AbstractController
 	#[Route('/tasks/{id}/edit', name: 'task_edit')]
 	public function edit(Task $task, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		// Check if the current user owns this task
 		if ($task->getUserEntity() !== $this->getUser()) {
 			throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres tâches.');
 		}
@@ -89,7 +96,6 @@ class TaskController extends AbstractController
 	#[Route('/tasks/{id}/toggle', name: 'task_toggle')]
 	public function toggleTask(Task $task, EntityManagerInterface $entityManager): Response
 	{
-		// Check if the current user owns this task
 		if ($task->getUserEntity() !== $this->getUser()) {
 			throw $this->createAccessDeniedException('Vous ne pouvez modifier que vos propres tâches.');
 		}
@@ -97,8 +103,12 @@ class TaskController extends AbstractController
 		$task->toggle(!$task->isDone());
 		$entityManager->flush();
 
-		$this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+		if ($task->isDone()) {
+			$this->addFlash('success', 'La tâche a été marquée comme terminée.');
+			return $this->redirectToRoute('task_done_list');
+		}
 
+		$this->addFlash('info', 'La tâche a été marquée comme non terminée.');
 		return $this->redirectToRoute('task_list');
 	}
 
