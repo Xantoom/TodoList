@@ -2,49 +2,47 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Task;
-use App\Entity\User;
+use App\Factory\TaskFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function Zenstruck\Foundry\faker;
 
 class AppFixtures extends Fixture
 {
-	private UserPasswordHasherInterface $userPasswordHasher;
-
-	public function __construct(
-		UserPasswordHasherInterface $userPasswordHasher
-	) {
-		$this->userPasswordHasher = $userPasswordHasher;
-	}
-
 	public function load(ObjectManager $manager): void
     {
-		$password = 'password';
+		// Hashed password for 'password'
+		$password = '$2y$04$tlNLH1lxtphb3FIsjiKGl.OxrjfNdoXlOmlWHRdBl3tYoZbVn5kpS';
 
-        $user = new User()
-	        ->setUsername('Test123')
-	        ->setEmail('test@test.com')
-	        ->setRoles(['ROLE_USER'])
-        ;
+		$testUser = UserFactory::createOne([
+			'username' => 'Test123',
+			'email' => 'test@test.com',
+			'roles' => ['ROLE_USER'],
+			'password' => $password,
+		])->_real();
 
-		$hashedPassword = $this->userPasswordHasher->hashPassword($user, $password);
-		$user->setPassword($hashedPassword);
+		$adminUser = UserFactory::createOne([
+			'username' => 'Admin',
+			'email' => 'admin@test.com',
+			'roles' => ['ROLE_ADMIN'],
+			'password' => $password,
+		])->_real();
 
-		$manager->persist($user);
+		TaskFactory::createMany(10, [
+			'content' => faker()->text(100),
+			'createdAt' => new \DateTimeImmutable('-1 month'),
+			'isDone' => faker()->boolean(30),
+			'title' => faker()->sentence(8),
+			'userEntity' => $testUser,
+		]);
 
-		for ($i = 1; $i <= 10; $i++) {
-			$task = new Task()
-				->setContent('Le contenu de la task n°' . $i)
-				->setCreatedAt(new \DateTimeImmutable())
-				->setIsDone($i % 2 === 0)
-				->setTitle('Task ' . $i)
-				->setUserEntity($user)
-			;
-
-			$manager->persist($task);
-		}
-
-        $manager->flush();
+		TaskFactory::createMany(5, [
+			'content' => faker()->text(100),
+			'createdAt' => new \DateTimeImmutable('-1 month'),
+			'isDone' => faker()->boolean(30),
+			'title' => faker()->sentence(8),
+			'userEntity' => $adminUser,
+		]);
     }
 }
