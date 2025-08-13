@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Technique - Authentification TodoList</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .page-break { page-break-before: always; }
+            .page-break-avoid { page-break-inside: avoid; }
+            .diagram { page-break-inside: avoid; }
+            h1 { page-break-after: avoid; }
+            h2 { page-break-after: avoid; }
+            h3 { page-break-after: avoid; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 15px;
+            background: white;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #007bff;
+            font-size: 2.2em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .toc h2 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .toc li {
+            margin-bottom: 4px;
+        }
+
+        h1 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h3 {
+            color: #495057;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .diagram {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+
+        .diagram img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+        }
+
+        .diagram h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .checkmark {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            color: #666;
+            font-style: italic;
+        }
+
+        .sequence-diagram {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        /* Éviter les coupures de page malheureuses */
+        .page-break-avoid {
+            page-break-inside: avoid;
+        }
+
+        ul, ol {
+            margin: 10px 0;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Documentation Technique</h1>
+        <p>Implémentation de l'authentification</p>
+        <p><strong>Application TodoList - Symfony</strong></p>
+    </div>
+
+    <div class="toc">
+        <h2>Table des matières</h2>
+        <ol>
+            <li><a href="#vue-densemble">Vue d'ensemble</a></li>
+            <li><a href="#architecture">Architecture de l'authentification</a></li>
+            <li><a href="#configuration">Configuration de sécurité</a></li>
+            <li><a href="#entite-user">Entité User</a></li>
+            <li><a href="#controleurs">Contrôleurs d'authentification</a></li>
+            <li><a href="#formulaires">Formulaires</a></li>
+            <li><a href="#templates">Templates</a></li>
+            <li><a href="#mots-de-passe">Gestion des mots de passe</a></li>
+            <li><a href="#controle-acces">Contrôle d'accès</a></li>
+            <li><a href="#fixtures">Fixtures et données de test</a></li>
+            <li><a href="#csrf">Sécurité CSRF</a></li>
+            <li><a href="#diagrammes">Diagrammes de séquence</a></li>
+        </ol>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="vue-densemble">1. Vue d'ensemble</h1>
+
+    <p>L'application TodoList utilise le composant Security de Symfony pour gérer l'authentification et l'autorisation des utilisateurs. Le système implémente :</p>
+
+    <ul>
+        <li><strong>Authentification par formulaire</strong> avec nom d'utilisateur et mot de passe</li>
+        <li><strong>Système de rôles</strong> (ROLE_USER, ROLE_ADMIN)</li>
+        <li><strong>Protection CSRF</strong> sur les formulaires de connexion</li>
+        <li><strong>Hachage sécurisé des mots de passe</strong> avec l'algorithme auto (bcrypt/argon2)</li>
+        <li><strong>Gestion des sessions</strong> utilisateur</li>
+    </ul>
+
+    <h1 id="architecture">2. Architecture de l'authentification</h1>
+
+    <h2>Diagramme de classes</h2>
+    <div class="diagram">
+        <img src="../diagrams/diagramme_de_classe.png" alt="Diagramme de classes" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 8px;">
+        <p><em>Figure 1 : Diagramme de classes montrant les relations entre User, Task et les contrôleurs</em></p>
+    </div>
+
+    <h2>Modèle de données</h2>
+    <div class="diagram">
+        <img src="../diagrams/modele_de_donnees.jpg" alt="Modèle de données" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 8px;">
+        <p><em>Figure 2 : Modèle de données de l'application TodoList</em></p>
+    </div>
+
+    <h2>Composants principaux</h2>
+
+    <div class="diagram">
+        <h3>Architecture des composants</h3>
+        <pre>
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│SecurityController│    │   UserController   │    │     User Entity     │
+│                 │    │                 │    │                 │
+│  - login()      │    │  - list()       │    │  - UserInterface│
+│  - logout()     │    │  - create()     │    │  - PasswordAuth │
+│                 │    │  - edit()       │    │  - roles        │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                    ┌─────────────────┐
+                    │   UserType Form  │
+                    │                 │
+                    │  - username     │
+                    │  - password     │
+                    │  - email        │
+                    │  - roles        │
+                    └─────────────────┘
+        </pre>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="configuration">2. Configuration de sécurité</h1>
+
+    <h2>Fichier : <code>config/packages/security.yaml</code></h2>
+
+    <h3>Password Hashers</h3>
+    <pre><code>password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+        'auto'</code></pre>
+    <ul>
+        <li>Utilise l'algorithme de hachage automatique (bcrypt ou argon2)</li>
+        <li>Configuration optimisée pour les environnements dev/test avec des coûts réduits</li>
+    </ul>
+
+    <h3>User Provider</h3>
+    <pre><code>providers:
+    app_user_provider:
+        entity:
+            class: App\Entity\User
+            property: username</code></pre>
+    <ul>
+        <li>Utilise l'entité User comme provider</li>
+        <li>L'authentification se fait par le nom d'utilisateur</li>
+    </ul>
+
+    <h3>Firewall Configuration</h3>
+    <pre><code>firewalls:
+    main:
+        lazy: true
+        provider: app_user_provider
+        pattern: ^/
+        form_login:
+            login_path: app_login
+            check_path: app_login
+            always_use_default_target_path: true
+            default_target_path: /
+            enable_csrf: true
+        logout:
+            path: app_logout</code></pre>
+
+    <div class="info">
+        <strong>Caractéristiques du firewall :</strong>
+        <ul>
+            <li><strong>Lazy loading</strong> : améliore les performances</li>
+            <li><strong>Form login</strong> : authentification par formulaire HTML</li>
+            <li><strong>Protection CSRF</strong> : prévient les attaques Cross-Site Request Forgery</li>
+            <li><strong>Redirection automatique</strong> vers la page d'accueil après connexion</li>
+        </ul>
+    </div>
+
+    <h3>Hiérarchie des rôles</h3>
+    <pre><code>role_hierarchy:
+    ROLE_ADMIN: [ROLE_USER]</code></pre>
+    <p>Un utilisateur ROLE_ADMIN hérite automatiquement de ROLE_USER</p>
+
+    <h3>Contrôle d'accès</h3>
+    <pre><code>access_control:
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/users, roles: IS_AUTHENTICATED }
+    - { path: ^/, roles: ROLE_USER }</code></pre>
+
+    <div class="page-break"></div>
+
+    <h1 id="entite-user">4. Entité User</h1>
+
+    <h2>Fichier : <code>src/Entity/User.php</code></h2>
+
+    <p>L'entité User implémente les interfaces Symfony requises pour l'authentification :</p>
+    <pre><code>class User implements UserInterface, PasswordAuthenticatedUserInterface</code></pre>
+
+    <h3>Propriétés principales</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Propriété</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><code>id</code></td><td>int</td><td>Identifiant unique auto-généré</td></tr>
+            <tr><td><code>email</code></td><td>string</td><td>Email unique (180 caractères max)</td></tr>
+            <tr><td><code>username</code></td><td>string</td><td>Nom d'utilisateur (255 caractères max)</td></tr>
+            <tr><td><code>password</code></td><td>string</td><td>Mot de passe haché</td></tr>
+            <tr><td><code>roles</code></td><td>array</td><td>Tableau des rôles utilisateur</td></tr>
+            <tr><td><code>task</code></td><td>Collection</td><td>Collection des tâches associées</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Méthodes d'interface</h3>
+    <ul>
+        <li><strong><code>getUserIdentifier()</code></strong> : Retourne l'email comme identifiant unique</li>
+        <li><strong><code>getRoles()</code></strong> : Retourne les rôles avec garantie du ROLE_USER minimum</li>
+        <li><strong><code>getPassword()</code></strong> : Retourne le mot de passe haché</li>
+        <li><strong><code>eraseCredentials()</code></strong> : Nettoie les données sensibles temporaires</li>
+    </ul>
+
+    <h3>Contraintes de base de données</h3>
+    <pre><code>#[ORM\UniqueConstraint(
+    name: 'UNIQ_IDENTIFIER_EMAIL',
+    fields: ['email']
+)]</code></pre>
+    <p>Garantit l'unicité des emails en base de données</p>
+
+    <div class="page-break"></div>
+
+    <h1 id="controleurs">5. Contrôleurs d'authentification</h1>
+
+    <h2>SecurityController</h2>
+
+    <h3>Route de connexion</h3>
+    <pre><code>#[Route(path: '/login', name: 'app_login')]
+public function login(
+    AuthenticationUtils $authenticationUtils
+): Response</code></pre>
+
+    <div class="info">
+        <strong>Fonctionnalités :</strong>
+        <ul>
+            <li>Récupère les erreurs d'authentification</li>
+            <li>Conserve le dernier nom d'utilisateur saisi</li>
+            <li>Rend le template de connexion avec ces données</li>
+        </ul>
+    </div>
+
+    <h3>Route de déconnexion</h3>
+    <pre><code>#[Route(path: '/logout', name: 'app_logout')]
+public function logout(): void</code></pre>
+    <ul>
+        <li>Méthode interceptée par le firewall Symfony</li>
+        <li>Gère automatiquement la déconnexion</li>
+    </ul>
+
+    <h2>UserController</h2>
+
+    <h3>Gestion des utilisateurs (ROLE_ADMIN requis)</h3>
+    <ul>
+        <li><strong><code>list()</code></strong> : Affiche la liste de tous les utilisateurs</li>
+        <li><strong><code>create()</code></strong> : Crée un nouvel utilisateur avec hachage du mot de passe</li>
+        <li><strong><code>edit()</code></strong> : Modifie un utilisateur existant</li>
+    </ul>
+
+    <div class="warning">
+        <strong>Sécurité :</strong>
+        <pre><code>#[IsGranted('ROLE_ADMIN')]</code></pre>
+        Toutes les actions nécessitent le rôle administrateur
+    </div>
+
+    <h1 id="formulaires">6. Formulaires</h1>
+
+    <h2>UserType Form</h2>
+
+    <h3>Champs du formulaire</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Champ</th>
+                <th>Type</th>
+                <th>Validation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><code>username</code></td><td>TextType</td><td>Requis</td></tr>
+            <tr><td><code>password</code></td><td>RepeatedType</td><td>Confirmation requise</td></tr>
+            <tr><td><code>email</code></td><td>EmailType</td><td>Format email validé</td></tr>
+            <tr><td><code>roles</code></td><td>ChoiceType</td><td>ROLE_USER ou ROLE_ADMIN</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Transformation des rôles</h3>
+    <pre><code>$builder->get('roles')
+    ->addModelTransformer(new CallbackTransformer(
+        function ($rolesArray) {
+            return count($rolesArray) ?
+                $rolesArray[0] : null;
+        },
+        function ($singleRole) {
+            return $singleRole ?
+                [$singleRole] : [];
+        }
+    ));</code></pre>
+
+    <p>Cette transformation permet :</p>
+    <ul>
+        <li>D'afficher un seul rôle dans le formulaire</li>
+        <li>De sauvegarder les rôles comme tableau en base</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="templates">7. Templates</h1>
+
+    <h2>Template de connexion : <code>templates/security/login.html.twig</code></h2>
+
+    <h3>Caractéristiques</h3>
+    <ul>
+        <li><strong>Design responsive</strong> avec Bootstrap</li>
+        <li><strong>Gestion des erreurs</strong> d'authentification</li>
+        <li><strong>Protection CSRF</strong> avec token</li>
+        <li><strong>Icons Font Awesome</strong> pour l'interface</li>
+        <li><strong>Validation côté client</strong> (champs requis)</li>
+    </ul>
+
+    <h3>Structure du formulaire</h3>
+    <pre><code>&lt;form action="{{ path('app_login') }}"
+      method="post"
+      class="login-form"&gt;
+    &lt;!-- Champ nom d'utilisateur --&gt;
+    &lt;input type="text"
+           id="username"
+           name="_username"
+           required /&gt;
+
+    &lt;!-- Champ mot de passe --&gt;
+    &lt;input type="password"
+           id="password"
+           name="_password"
+           required /&gt;
+
+    &lt;!-- Token CSRF --&gt;
+    &lt;input type="hidden"
+           name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}" /&gt;
+
+    &lt;button type="submit"&gt;Se connecter&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+    <h3>Fonctionnalités UX</h3>
+    <ul>
+        <li><strong>Rétention du nom d'utilisateur</strong> en cas d'erreur</li>
+        <li><strong>Messages d'erreur localisés</strong></li>
+        <li><strong>Lien vers création d'utilisateur</strong></li>
+        <li><strong>Styling moderne</strong> avec gradients et animations</li>
+    </ul>
+
+    <h1 id="mots-de-passe">8. Gestion des mots de passe</h1>
+
+    <h2>Hachage</h2>
+
+    <p>L'application utilise le service <code>UserPasswordHasherInterface</code> :</p>
+
+    <pre><code>$hashedPassword = $passwordHasher->hashPassword(
+    $user,
+    $user->getPassword()
+);
+$user->setPassword($hashedPassword);</code></pre>
+
+    <h2>Configuration par environnement</h2>
+
+    <h3>Production</h3>
+    <ul>
+        <li><strong>Algorithme</strong> : auto (bcrypt/argon2)</li>
+        <li><strong>Coût maximum</strong> pour sécurité optimale</li>
+    </ul>
+
+    <h3>Développement/Test</h3>
+    <pre><code>when@dev:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\
+            PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Coût minimal pour performances
+                time_cost: 3
+                memory_cost: 10</code></pre>
+
+    <div class="page-break"></div>
+
+    <h1 id="controle-acces">9. Contrôle d'accès</h1>
+
+    <h2>Niveaux de protection</h2>
+
+    <ol>
+        <li><strong>PUBLIC_ACCESS</strong> : <code>/login</code> - Accès libre</li>
+        <li><strong>IS_AUTHENTICATED</strong> : <code>/users</code> - Utilisateur connecté requis</li>
+        <li><strong>ROLE_USER</strong> : <code>/</code> - Rôle utilisateur minimum</li>
+        <li><strong>ROLE_ADMIN</strong> : Actions de gestion utilisateurs</li>
+    </ol>
+
+    <h2>Annotations de sécurité</h2>
+    <pre><code>#[IsGranted('ROLE_ADMIN')]
+public function create(): Response</code></pre>
+
+    <h1 id="fixtures">10. Fixtures et données de test</h1>
+
+    <h2>AppFixtures</h2>
+
+    <h3>Utilisateurs par défaut</h3>
+
+    <pre><code>// Utilisateur standard
+$testUser = UserFactory::createOne([
+    'username' => 'Test123',
+    'email' => 'test@test.com',
+    'roles' => ['ROLE_USER'],
+    'password' => '$2y$04$tlNLH1lxtphb3FIsjiKGl.' .
+                 'OxrjfNdoXlOmlWHRdBl3tYoZbVn5kpS'
+]);
+
+// Administrateur
+$adminUser = UserFactory::createOne([
+    'username' => 'Admin',
+    'email' => 'admin@test.com',
+    'roles' => ['ROLE_ADMIN'],
+    'password' => '$2y$04$tlNLH1lxtphb3FIsjiKGl.' .
+                 'OxrjfNdoXlOmlWHRdBl3tYoZbVn5kpS'
+]);</code></pre>
+
+    <div class="info">
+        <strong>Mot de passe pour les deux comptes</strong> : <code>password</code>
+    </div>
+
+    <h1 id="csrf">11. Sécurité CSRF</h1>
+
+    <h2>Protection formulaire de connexion</h2>
+    <pre><code>&lt;input type="hidden"
+       name="_csrf_token"
+       value="{{ csrf_token('authenticate') }}" /&gt;</code></pre>
+
+    <h2>Configuration</h2>
+    <pre><code>form_login:
+    enable_csrf: true</code></pre>
+
+    <div class="info">
+        <strong>Avantages :</strong>
+        <ul>
+            <li>Prévient les attaques par force brute automatisées</li>
+            <li>Protège contre les requêtes malveillantes cross-site</li>
+            <li>Validation automatique par Symfony</li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="diagrammes">12. Diagrammes de séquence</h1>
+
+    <h2>Processus d'authentification utilisateur</h2>
+
+    <div class="diagram">
+        <img src="../diagrams/diagramme_de_sequence_authentification_utilisateur.png" alt="Diagramme de séquence - Authentification utilisateur" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 8px;">
+        <p><em>Figure 3 : Diagramme de séquence détaillant le processus d'authentification d'un utilisateur</em></p>
+    </div>
+
+    <p>Ce diagramme illustre le flux complet d'authentification avec les interactions entre :</p>
+    <ul>
+        <li><strong>User</strong> : L'utilisateur qui tente de se connecter</li>
+        <li><strong>SecurityController</strong> : Gère les requêtes de connexion</li>
+        <li><strong>AuthenticationManager</strong> : Orchestre le processus d'authentification</li>
+        <li><strong>UserRepository</strong> : Récupère les données utilisateur de la base</li>
+        <li><strong>Database</strong> : Stockage des informations utilisateur</li>
+        <li><strong>Session</strong> : Gestion de la session utilisateur authentifié</li>
+    </ul>
+
+    <h2>Processus de création et modification de tâches</h2>
+
+    <div class="diagram page-break-avoid">
+        <img src="../diagrams/diagramme_de_sequence_creation_tache.png" alt="Diagramme de séquence - Création de tâche">
+        <p><em>Figure 4 : Diagramme de séquence pour la création d'une nouvelle tâche</em></p>
+    </div>
+
+    <div class="diagram page-break-avoid">
+        <img src="../diagrams/diagramme_de_sequence_modification_tache.png" alt="Diagramme de séquence - Modification de tâche">
+        <p><em>Figure 5 : Diagramme de séquence pour la modification d'une tâche existante</em></p>
+    </div>
+
+    <p>Ces diagrammes montrent comment l'authentification s'intègre dans les opérations CRUD des tâches, avec la vérification des autorisations à chaque étape.</p>
+
+    <div class="page-break"></div>
+
+    <h1>Bonnes pratiques implémentées</h1>
+
+    <h2>Sécurité</h2>
+    <ul>
+        <li><span class="checkmark">✅</span> <strong>Hachage sécurisé</strong> avec algorithmes modernes</li>
+        <li><span class="checkmark">✅</span> <strong>Protection CSRF</strong> sur formulaires sensibles</li>
+        <li><span class="checkmark">✅</span> <strong>Validation des autorisations</strong> par annotations</li>
+        <li><span class="checkmark">✅</span> <strong>Sessions sécurisées</strong> gérées par Symfony</li>
+        <li><span class="checkmark">✅</span> <strong>Contraintes base de données</strong> (unicité email)</li>
+    </ul>
+
+    <h2>Performance</h2>
+    <ul>
+        <li><span class="checkmark">✅</span> <strong>Lazy loading</strong> des firewalls</li>
+        <li><span class="checkmark">✅</span> <strong>Coûts de hachage optimisés</strong> par environnement</li>
+        <li><span class="checkmark">✅</span> <strong>User provider efficient</strong> basé sur l'entité</li>
+    </ul>
+
+    <h2>Maintenabilité</h2>
+    <ul>
+        <li><span class="checkmark">✅</span> <strong>Séparation des responsabilités</strong> (Controller/Form/Entity)</li>
+        <li><span class="checkmark">✅</span> <strong>Configuration centralisée</strong> dans security.yaml</li>
+        <li><span class="checkmark">✅</span> <strong>Formulaires réutilisables</strong> avec UserType</li>
+        <li><span class="checkmark">✅</span> <strong>Fixtures pour environnement de développement</strong></li>
+    </ul>
+
+    <h1>Améliorations possibles</h1>
+
+    <h2>Sécurité renforcée</h2>
+    <ul>
+        <li><strong>Limitation des tentatives</strong> de connexion (rate limiting)</li>
+        <li><strong>Authentification à deux facteurs</strong> (2FA)</li>
+        <li><strong>Audit des connexions</strong> et journalisation</li>
+        <li><strong>Politique de mot de passe</strong> renforcée</li>
+    </ul>
+
+    <h2>Fonctionnalités utilisateur</h2>
+    <ul>
+        <li><strong>Reset de mot de passe</strong> par email</li>
+        <li><strong>Inscription libre</strong> pour nouveaux utilisateurs</li>
+        <li><strong>Profil utilisateur</strong> modifiable</li>
+        <li><strong>Remember me</strong> pour sessions persistantes</li>
+    </ul>
+
+    <h2>Monitoring</h2>
+    <ul>
+        <li><strong>Métriques d'authentification</strong></li>
+        <li><strong>Alertes sécurité</strong></li>
+        <li><strong>Dashboard administrateur</strong></li>
+    </ul>
+</body>
+</html>
