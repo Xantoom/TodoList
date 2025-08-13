@@ -16,6 +16,78 @@
 
 	{{ importmap('app') }}
 
+	<style>
+		/* Styles additionnels pour le nouveau layout */
+		body {
+			font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.main-content {
+			min-height: calc(100vh - 200px);
+		}
+
+		.action-buttons {
+			margin-bottom: 1.5rem;
+		}
+
+		.user-welcome {
+			color: var(--dark-color);
+			font-weight: 500;
+			background: rgba(255, 255, 255, 0.9);
+			padding: 0.5rem 1rem;
+			border-radius: 20px;
+			backdrop-filter: blur(10px);
+		}
+
+		.navbar-logo {
+			max-height: 40px;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		}
+
+		.footer-container {
+			margin-top: auto;
+		}
+
+		.footer-info, .footer-copyright {
+			font-size: 0.9rem;
+			color: var(--dark-color);
+		}
+
+		.gap-2 {
+			gap: 0.5rem;
+		}
+
+		.me-1 { margin-right: 0.25rem; }
+		.me-2 { margin-right: 0.5rem; }
+		.me-3 { margin-right: 1rem; }
+
+		.d-flex { display: flex; }
+		.flex-wrap { flex-wrap: wrap; }
+		.justify-content-between { justify-content: space-between; }
+		.justify-content-center { justify-content: center; }
+		.align-items-center { align-items: center; }
+
+		.text-danger { color: var(--danger-color) !important; }
+
+		@media (max-width: 768px) {
+			.left-actions, .right-actions {
+				width: 100%;
+				margin-bottom: 0.5rem;
+			}
+
+			.right-actions {
+				justify-content: flex-start;
+			}
+
+			.user-welcome {
+				display: block;
+				margin-bottom: 0.5rem;
+				text-align: center;
+			}
+		}
+	</style>
+
 	{% block stylesheets %}{% endblock %}
 	{% block javascripts %}{% endblock %}
 </head>
@@ -115,77 +187,5 @@
 		</div>
 	</footer>
 </div>
-
-<style>
-	/* Styles additionnels pour le nouveau layout */
-	body {
-		font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	}
-
-	.main-content {
-		min-height: calc(100vh - 200px);
-	}
-
-	.action-buttons {
-		margin-bottom: 1.5rem;
-	}
-
-	.user-welcome {
-		color: var(--dark-color);
-		font-weight: 500;
-		background: rgba(255, 255, 255, 0.9);
-		padding: 0.5rem 1rem;
-		border-radius: 20px;
-		backdrop-filter: blur(10px);
-	}
-
-	.navbar-logo {
-		max-height: 40px;
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-	}
-
-	.footer-container {
-		margin-top: auto;
-	}
-
-	.footer-info, .footer-copyright {
-		font-size: 0.9rem;
-		color: var(--dark-color);
-	}
-
-	.gap-2 {
-		gap: 0.5rem;
-	}
-
-	.me-1 { margin-right: 0.25rem; }
-	.me-2 { margin-right: 0.5rem; }
-	.me-3 { margin-right: 1rem; }
-
-	.d-flex { display: flex; }
-	.flex-wrap { flex-wrap: wrap; }
-	.justify-content-between { justify-content: space-between; }
-	.justify-content-center { justify-content: center; }
-	.align-items-center { align-items: center; }
-
-	.text-danger { color: var(--danger-color) !important; }
-
-	@media (max-width: 768px) {
-		.left-actions, .right-actions {
-			width: 100%;
-			margin-bottom: 0.5rem;
-		}
-
-		.right-actions {
-			justify-content: flex-start;
-		}
-
-		.user-welcome {
-			display: block;
-			margin-bottom: 0.5rem;
-			text-align: center;
-		}
-	}
-</style>
 </body>
 </html>

@@ -1,205 +1,206 @@
 {% extends 'base.html.twig' %}
 
 {% block header_title %}
-    <div class="page-header">
-        <h1><i class="fas fa-list-ul me-2"></i>Liste des tâches à faire</h1>
-    </div>
+	<div class="page-header">
+		<h1><i class="fas fa-list-ul me-2"></i>Liste des tâches à faire</h1>
+	</div>
 {% endblock %}
 
 {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
-    <div class="task-actions mb-4">
-        <a href="{{ path('task_create') }}" class="btn btn-info">
-            <i class="fas fa-plus me-1"></i>Créer une tâche
-        </a>
-    </div>
+	<div class="task-actions mb-4">
+		<a href="{{ path('task_create') }}" class="btn btn-info">
+			<i class="fas fa-plus me-1"></i>Créer une tâche
+		</a>
+	</div>
 
-    <div class="row tasks-grid">
-        {% for task in tasks %}
-            {% if not task.isDone %}
-                <div class="col-sm-6 col-lg-4 col-md-4">
-                    <div class="task-card">
-                        <div class="task-status">
-                            <i class="fas fa-clock text-warning"></i>
-                            <span class="status-text">En cours</span>
-                        </div>
-                        <div class="task-content">
-                            <h4 class="task-title">
-                                <a href="{{ path('task_edit', {'id' : task.id }) }}">
-                                    <i class="fas fa-edit me-1"></i>{{ task.title }}
-                                </a>
-                            </h4>
-                            <p class="task-description">{{ task.content }}</p>
-                            {% if task.userEntity %}
-                                <div class="task-author">
-                                    <i class="fas fa-user me-1"></i>
-                                    <small>Créée par {{ task.userEntity.username }}</small>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="task-actions">
-                            <form action="{{ path('task_toggle', {'id' : task.id }) }}" class="d-inline">
-                                <button class="btn btn-success btn-sm" type="submit">
-                                    <i class="fas fa-check me-1"></i>Marquer comme faite
-                                </button>
-                            </form>
-                            {% if task.userEntity is same as app.user %}
-                                <form action="{{ path('task_delete', {'id' : task.id }) }}" class="d-inline">
-                                    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">
-                                        <i class="fas fa-trash me-1"></i>Supprimer
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
-            {% endif %}
-        {% else %}
-            <div class="col-12">
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <h3>Aucune tâche à faire</h3>
-                    <p>Il n'y a pas encore de tâche enregistrée.</p>
-                    <a href="{{ path('task_create') }}" class="btn btn-warning">
-                        <i class="fas fa-plus me-1"></i>Créer une tâche
-                    </a>
-                </div>
-        {% endfor %}
-    </div>
-<style>
-    .page-header {
-        text-align: center;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
-        border-radius: var(--border-radius);
-    }
+	<div class="row tasks-grid">
+		{% for task in tasks %}
+			{% if not task.isDone %}
+				<div class="col-sm-6 col-lg-4 col-md-4">
+					<div class="task-card">
+						<div class="task-status">
+							<i class="fas fa-clock text-warning"></i>
+							<span class="status-text">En cours</span>
+						</div>
+						<div class="task-content">
+							<h4 class="task-title">
+								<a href="{{ path('task_edit', {'id' : task.id }) }}">
+									<i class="fas fa-edit me-1"></i>{{ task.title }}
+								</a>
+							</h4>
+							<p class="task-description">{{ task.content }}</p>
+							{% if task.userEntity %}
+								<div class="task-author">
+									<i class="fas fa-user me-1"></i>
+									<small>Créée par {{ task.userEntity.username }}</small>
+								</div>
+							{% endif %}
+						</div>
+						<div class="task-actions">
+							<form action="{{ path('task_toggle', {'id' : task.id }) }}" class="d-inline">
+								<button class="btn btn-success btn-sm" type="submit">
+									<i class="fas fa-check me-1"></i>Marquer comme faite
+								</button>
+							</form>
+							{% if task.userEntity is same as app.user %}
+								<form action="{{ path('task_delete', {'id' : task.id }) }}" class="d-inline">
+									<button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">
+										<i class="fas fa-trash me-1"></i>Supprimer
+									</button>
+								</form>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		{% else %}
+			<div class="col-12">
+				<div class="empty-state">
+					<div class="empty-icon">
+						<i class="fas fa-clipboard-list"></i>
+					</div>
+					<h3>Aucune tâche à faire</h3>
+					<p>Il n'y a pas encore de tâche enregistrée.</p>
+					<a href="{{ path('task_create') }}" class="btn btn-warning">
+						<i class="fas fa-plus me-1"></i>Créer une tâche
+					</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 
-    .task-actions {
-        text-align: right;
-    }
+	<style>
+		.page-header {
+			text-align: center;
+			margin-bottom: 2rem;
+			padding: 1.5rem;
+			background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(41, 128, 185, 0.1));
+			border-radius: var(--border-radius);
+		}
 
-    .tasks-grid {
-        margin-top: 1rem;
-    }
+		.task-actions {
+			text-align: right;
+		}
 
-    .task-card {
-        background: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+		.tasks-grid {
+			margin-top: 1rem;
+		}
 
-    .task-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-hover);
-    }
+		.task-card {
+			background: white;
+			border-radius: var(--border-radius);
+			box-shadow: var(--shadow);
+			transition: var(--transition);
+			overflow: hidden;
+			margin-bottom: 1.5rem;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
 
-    .task-status {
-        background: linear-gradient(45deg, #feca57, #ff9ff3);
-        color: white;
-        padding: 0.5rem 1rem;
-        display: flex;
-        align-items: center;
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
+		.task-card:hover {
+			transform: translateY(-3px);
+			box-shadow: var(--shadow-hover);
+		}
 
-    .status-text {
-        margin-left: 0.5rem;
-    }
+		.task-status {
+			background: linear-gradient(45deg, #feca57, #ff9ff3);
+			color: white;
+			padding: 0.5rem 1rem;
+			display: flex;
+			align-items: center;
+			font-weight: 600;
+			font-size: 0.9rem;
+		}
 
-    .task-content {
-        padding: 1.5rem;
-        flex-grow: 1;
-    }
+		.status-text {
+			margin-left: 0.5rem;
+		}
 
-    .task-title {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
+		.task-content {
+			padding: 1.5rem;
+			flex-grow: 1;
+		}
 
-    .task-title a {
-        color: var(--dark-color);
-        text-decoration: none;
-        transition: var(--transition);
-    }
+		.task-title {
+			font-size: 1.2rem;
+			margin-bottom: 1rem;
+			font-weight: 600;
+		}
 
-    .task-title a:hover {
-        color: var(--primary-color);
-    }
+		.task-title a {
+			color: var(--dark-color);
+			text-decoration: none;
+			transition: var(--transition);
+		}
 
-    .task-description {
-        color: #666;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-    }
+		.task-title a:hover {
+			color: var(--primary-color);
+		}
 
-    .task-author {
-        color: #999;
-        font-style: italic;
-        border-top: 1px solid #eee;
-        padding-top: 1rem;
-        margin-top: 1rem;
-    }
+		.task-description {
+			color: #666;
+			line-height: 1.5;
+			margin-bottom: 1rem;
+		}
 
-    .task-actions {
-        padding: 1rem 1.5rem;
-        background: #f8f9fa;
-        border-top: 1px solid #eee;
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
+		.task-author {
+			color: #999;
+			font-style: italic;
+			border-top: 1px solid #eee;
+			padding-top: 1rem;
+			margin-top: 1rem;
+		}
 
-    .task-actions .btn {
-        flex: 1;
-        min-width: 120px;
-    }
+		.task-actions {
+			padding: 1rem 1.5rem;
+			background: #f8f9fa;
+			border-top: 1px solid #eee;
+			display: flex;
+			gap: 0.5rem;
+			flex-wrap: wrap;
+		}
 
-    .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: white;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-    }
+		.task-actions .btn {
+			flex: 1;
+			min-width: 120px;
+		}
 
-    .empty-icon {
-        font-size: 4rem;
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
-    }
+		.empty-state {
+			text-align: center;
+			padding: 4rem 2rem;
+			background: white;
+			border-radius: var(--border-radius);
+			box-shadow: var(--shadow);
+		}
 
-    .empty-state h3 {
-        color: var(--dark-color);
-        margin-bottom: 1rem;
-    }
+		.empty-icon {
+			font-size: 4rem;
+			color: var(--primary-color);
+			margin-bottom: 1.5rem;
+		}
 
-    .empty-state p {
-        color: #666;
-        margin-bottom: 2rem;
-    }
+		.empty-state h3 {
+			color: var(--dark-color);
+			margin-bottom: 1rem;
+		}
 
-    @media (max-width: 768px) {
-        .task-actions {
-            text-align: center;
-        }
+		.empty-state p {
+			color: #666;
+			margin-bottom: 2rem;
+		}
 
-        .task-actions .btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-    }
-</style>
+		@media (max-width: 768px) {
+			.task-actions {
+				text-align: center;
+			}
+
+			.task-actions .btn {
+				width: 100%;
+				margin-bottom: 0.5rem;
+			}
+		}
+	</style>
 {% endblock %}
-            </div>
-        </div>
