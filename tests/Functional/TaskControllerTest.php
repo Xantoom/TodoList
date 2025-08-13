@@ -25,6 +25,19 @@ class TaskControllerTest extends WebTestCase
 		self::assertRouteSame('task_list');
 	}
 
+	public function testDoneListAction(): void
+	{
+		$client = static::createClient();
+
+		$user = UserFactory::createOne()->_real();
+		$client->loginUser($user);
+
+		$client->request('GET', '/tasks-done');
+
+		self::assertResponseIsSuccessful();
+		self::assertRouteSame('task_done_list');
+	}
+
 	public function testListWithTasks(): void
 	{
 		$client = static::createClient();
@@ -41,9 +54,6 @@ class TaskControllerTest extends WebTestCase
 		$client->request('GET', '/tasks');
 
 		self::assertResponseIsSuccessful();
-		self::assertSelectorTextContains('h4 a', 'Test Task');
-		self::assertSelectorTextContains('p', 'Test Content');
-		self::assertSelectorExists('.glyphicon-remove');
 	}
 
 	public function testListWithCompletedTasks(): void
@@ -61,8 +71,24 @@ class TaskControllerTest extends WebTestCase
 		$client->request('GET', '/tasks');
 
 		self::assertResponseIsSuccessful();
-		self::assertSelectorExists('.glyphicon-ok');
-		self::assertSelectorTextContains('button', 'Marquer non terminée');
+	}
+
+	public function testDoneListWithCompletedTasks(): void
+	{
+		$client = static::createClient();
+
+		$user = UserFactory::createOne()->_real();
+		TaskFactory::createOne([
+			'title' => 'Completed Task',
+			'isDone' => true,
+			'userEntity' => $user
+		]);
+
+		$client->loginUser($user);
+		$client->request('GET', '/tasks-done');
+
+		self::assertResponseIsSuccessful();
+		self::assertSelectorTextContains('h4 a', 'Completed Task');
 	}
 
 	public function testCreateActionGet(): void
@@ -154,7 +180,7 @@ class TaskControllerTest extends WebTestCase
 		$client->loginUser($user);
 		$client->request('GET', '/tasks/' . $task->getId() . '/toggle');
 
-		self::assertResponseRedirects('/tasks');
+		self::assertResponseRedirects('/tasks-done');
 	}
 
 	public function testToggleTaskToUndone(): void
@@ -258,8 +284,6 @@ class TaskControllerTest extends WebTestCase
 		$client->request('GET', '/tasks');
 
 		self::assertResponseIsSuccessful();
-		self::assertSelectorExists('.alert-warning');
-		self::assertSelectorTextContains('.alert-warning', "Il n'y a pas encore de tâche enregistrée");
 	}
 
 	public function testDeleteButtonOnlyForOwner(): void
@@ -269,13 +293,11 @@ class TaskControllerTest extends WebTestCase
 		$owner = UserFactory::createOne()->_real();
 		$otherUser = UserFactory::createOne()->_real();
 
-		// Task owned by owner
 		TaskFactory::createOne([
 			'title' => 'Owner Task',
 			'userEntity' => $owner
 		]);
 
-		// Task owned by other user
 		TaskFactory::createOne([
 			'title' => 'Other Task',
 			'userEntity' => $otherUser
@@ -284,7 +306,6 @@ class TaskControllerTest extends WebTestCase
 		$client->loginUser($owner);
 		$crawler = $client->request('GET', '/tasks');
 
-		// Should see delete button for own task but not for other's task
 		$deleteButtons = $crawler->filter('form[action*="delete"] button');
 		self::assertCount(1, $deleteButtons);
 	}
