@@ -1,6 +1,6 @@
 twig:
-    file_name_pattern: '*.twig'
+    default_path: '%kernel.project_dir%/templates'
 
-when@test:
-    twig:
-        strict_variables: true
+    # Configuration des thèmes de formulaires Bootstrap
+    form_themes:
+        - 'bootstrap_5_layout.html.twig'

@@ -232,76 +232,76 @@ body {
     padding: 0.75rem 1rem;
     transition: var(--transition);
     background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .form-control:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
     background: white;
+    outline: none;
 }
 
-.form-group label {
+.form-control:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.form-select {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background: white;
+    outline: none;
+}
+
+.form-check-input {
+    border-radius: 6px;
+    border: 2px solid #e9ecef;
+    transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-group label, .mb-3 label, .form-label {
     font-weight: 600;
     color: var(--dark-color);
     margin-bottom: 0.5rem;
+    font-size: 1rem;
+    display: block;
 }
 
-/* Tableaux modernes */
-.table {
-    background: white;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
+.form-text {
+    color: #666;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
 }
 
-.table thead th {
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    font-weight: 600;
-    border: none;
-    padding: 1rem;
+/* Amélioration de l'espacement */
+.row {
+    margin-bottom: 2rem;
 }
 
-.table tbody tr {
-    transition: var(--transition);
-}
-
-.table tbody tr:hover {
-    background: rgba(102, 126, 234, 0.05);
-}
-
-.table td {
-    padding: 1rem;
-    border-color: #f8f9fa;
-}
-
-/* Icônes avec animations */
-.glyphicon {
-    transition: var(--transition);
-}
-
-.glyphicon-ok {
-    color: var(--success-color);
-}
-
-.glyphicon-remove {
-    color: var(--danger-color);
-}
-
-/* Footer moderne */
-footer {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 2rem;
-    margin-top: 3rem;
-}
-
-footer p {
-    margin: 0;
-    color: var(--dark-color);
-    font-weight: 500;
+.col-sm-4, .col-lg-4, .col-md-4 {
+    margin-bottom: 1rem;
 }
 
 /* Animations */
@@ -369,11 +369,169 @@ form {
     margin: 0.25rem;
 }
 
-/* Amélioration de l'espacement */
-.row {
-    margin-bottom: 2rem;
+/* Formulaires modernes - Améliorations Bootstrap */
+.form-control {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.col-sm-4, .col-lg-4, .col-md-4 {
-    margin-bottom: 1rem;
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background: white;
+    outline: none;
+}
+
+.form-control:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+.form-select {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background: white;
+    outline: none;
+}
+
+.form-check-input {
+    border-radius: 6px;
+    border: 2px solid #e9ecef;
+    transition: var(--transition);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-group label, .mb-3 label, .form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    display: block;
+}
+
+.form-text {
+    color: #666;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Amélioration des textarea */
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Messages d'erreur de formulaire */
+.invalid-feedback {
+    display: block;
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.is-invalid {
+    border-color: var(--danger-color);
+}
+
+.is-invalid:focus {
+    border-color: var(--danger-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+}
+
+/* Style pour les groupes de formulaires */
+.mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+.row .mb-3 {
+    margin-bottom: 1.5rem;
+}
+
+/* Amélioration des boutons radio et checkbox */
+.form-check {
+    margin-bottom: 0.75rem;
+}
+
+.form-check-label {
+    font-weight: 400;
+    color: var(--dark-color);
+    cursor: pointer;
+    padding-left: 0.25rem;
+}
+
+.form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+/* Style pour les input groups */
+.input-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.input-group .form-control {
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.input-group .form-control:first-child {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+}
+
+.input-group .form-control:last-child {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.input-group-text {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: 2px solid var(--primary-color);
+    font-weight: 600;
+}
+
+/* Amélioration des messages de validation */
+.valid-feedback {
+    display: block;
+    color: var(--success-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.is-valid {
+    border-color: var(--success-color);
+}
+
+.is-valid:focus {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 0.2rem rgba(78, 205, 196, 0.25);
 }
