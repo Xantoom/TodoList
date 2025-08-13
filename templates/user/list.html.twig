@@ -2,32 +2,54 @@
 
 {% block header_img %}{% endblock %}
 
-{% block header_title %}<h1>Liste des utilisateurs</h1>{% endblock %}
+{% block header_title %}
+    <div class="page-header">
+        <h1><i class="fas fa-users me-2"></i>Liste des utilisateurs</h1>
+    </div>
+{% endblock %}
 
 {% block body %}
     {% if users|length == 0 %}
-        <div class="alert alert-warning" role="alert">
-            Il n'y a pas encore d'utilisateur enregistré. <a href="{{ path('user_create') }}" class="btn btn-warning pull-right">Créer un utilisateur</a>
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-users-slash"></i>
+            </div>
+            <h3>Aucun utilisateur enregistré</h3>
+            <p>Il n'y a pas encore d'utilisateur enregistré dans le système.</p>
+            <a href="{{ path('user_create') }}" class="btn btn-primary">
+                <i class="fas fa-user-plus me-1"></i>Créer un utilisateur
+            </a>
         </div>
     {% else %}
-        <div class="row">
-            <table class="table">
+        <div class="users-actions mb-4">
+            <a href="{{ path('user_create') }}" class="btn btn-primary">
+                <i class="fas fa-user-plus me-1"></i>Créer un utilisateur
+            </a>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-modern">
                 <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nom d'utilisateur</th>
-                    <th>Adresse d'utilisateur</th>
-                    <th>Actions</th>
-                </tr>
+                    <tr>
+                        <th><i class="fas fa-hashtag me-1"></i>#</th>
+                        <th><i class="fas fa-user me-1"></i>Nom d'utilisateur</th>
+                        <th><i class="fas fa-envelope me-1"></i>Adresse email</th>
+                        <th><i class="fas fa-cogs me-1"></i>Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for user in users %}
                     <tr>
-                        <th scope="row">{{ loop.index }}</th>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>
-                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
+                        <td class="user-number">{{ loop.index }}</td>
+                        <td class="user-name">
+                            <i class="fas fa-user-circle me-2 text-primary"></i>
+                            {{ user.username }}
+                        </td>
+                        <td class="user-email">{{ user.email }}</td>
+                        <td class="user-actions">
+                            <a href="{{ path('user_edit', {'id' : user.id}) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit me-1"></i>Modifier
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -35,4 +57,125 @@
             </table>
         </div>
     {% endif %}
+
+<style>
+    .page-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border-radius: var(--border-radius);
+    }
+
+    .users-actions {
+        text-align: right;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .table-modern {
+        margin-bottom: 0;
+        background: transparent;
+    }
+
+    .table-modern thead th {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.9rem;
+    }
+
+    .table-modern tbody tr {
+        transition: var(--transition);
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    .table-modern tbody tr:hover {
+        background: rgba(102, 126, 234, 0.05);
+        transform: scale(1.01);
+    }
+
+    .table-modern tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .table-modern td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+    }
+
+    .user-number {
+        font-weight: 600;
+        color: var(--primary-color);
+        width: 60px;
+    }
+
+    .user-name {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    .user-email {
+        color: #666;
+    }
+
+    .user-actions {
+        text-align: right;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-state h3 {
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .users-actions {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .table-modern {
+            min-width: 600px;
+        }
+
+        .table-modern thead th,
+        .table-modern td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 {% endblock %}
