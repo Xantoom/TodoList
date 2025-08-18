@@ -1,6 +1,10 @@
 # TodoList - Projet 8 OpenClassrooms
 
-Application de gestion de tâches développée avec Symfony 7.3, utilisant Docker et FrankenPHP.
+> TodoList est un projet de formation de la formation Développeur PHP Symfony d'OpenClassrooms. Il s'agit d'une application de gestion de tâches et d'utilisateurs.
+
+Étape du projet : 100% (soutenance validée)
+
+---
 
 ## 📋 Prérequis
 
